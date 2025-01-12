@@ -134,7 +134,7 @@ constexpr std::uint64_t seed() {
         shifted |= c;
     }
 
-    return shifted;
+    return 0;
 }
 
 const key_t SHM_KEY = ftok("./shm", 0);

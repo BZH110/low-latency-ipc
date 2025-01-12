@@ -1,7 +1,7 @@
 CC=g++
-CFLAGS=--std=c++14 -g -O2
+CFLAGS=--std=c++14 -g -O3
 
-TARGETS=alice bob
+TARGETS=alice bob test
 
 all: ${TARGETS}
 

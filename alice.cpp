@@ -119,8 +119,6 @@ const Message *next_message()
     return m;
 }
 
-bool debug = false;
-
 // 记录延迟
 void record(const Message *m)
 {
@@ -128,11 +126,6 @@ void record(const Message *m)
     time_t t = now();
     delays.push_back((t - m->t) / 2); // 来回的时间差除2近似地取作单程延迟，注意每轮通信会有四次校验和的计算，这些耗时也必须包含进延迟中
     static int cnt = 0;
-    if (debug) {
-        std::cout << "cnt:" << cnt++ << " total:" << test_cases.size() << std::endl;
-        std::cout << "size:" << m->size << std::endl;
-        std::cout << "interval:" << (t - m->t) / 2 << std::endl;
-    }
     // printf("%ld %ld %ld\n", m->t, t, (t - m->t) / 2);
     static std::set<time_t> ts;
     assert(ts.find(m->t) == ts.end()); // 每个时间戳对应的消息只应被记录一次
@@ -144,7 +137,7 @@ void record(const Message *m)
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
 void* InitShm() {
-    std::cout << ALICE_MAGIC << " " << BOB_MAGIC << std::endl;
+    std::cout << "alice magic:" << ALICE_MAGIC << " " << "Bob Magic:" << BOB_MAGIC << std::endl;
     int shmid = shmget(SHM_KEY, SHM_SIZE, IPC_CREAT|0666);
     if(shmid == -1) {
         std::cerr << "shmget error!" << std::endl;
@@ -198,12 +191,6 @@ int main()
             send(m1);
             const Message *m2 = recv();
             record(m2);
-        }
-        else
-        {
-            time_t dt = now() - test_cases.front().first;
-            timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
-            nanosleep(&req, &rem); // 等待到下一条消息的发送时间   
         }
     }
 

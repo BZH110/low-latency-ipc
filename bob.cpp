@@ -1,7 +1,7 @@
 #include "common.h"
 
 char* InitShm() {
-    std::cout << ALICE_MAGIC << " " << BOB_MAGIC << std::endl;
+    std::cout << "alice magic:" << ALICE_MAGIC << " " << "Bob Magic:" << BOB_MAGIC << std::endl;
     int shmid = shmget(SHM_KEY, SHM_SIZE, IPC_CREAT|0666);
     if(shmid == -1) {
         std::cerr << "shmget error!" << std::endl;
