@@ -144,6 +144,7 @@ void record(const Message *m)
 /* --------------------------------------不得修改两条分割线之间的内容-------------------------------------- */
 
 void* InitShm() {
+    std::cout << ALICE_MAGIC << " " << BOB_MAGIC << std::endl;
     int shmid = shmget(SHM_KEY, SHM_SIZE, IPC_CREAT|0666);
     if(shmid == -1) {
         std::cerr << "shmget error!" << std::endl;
@@ -202,7 +203,7 @@ int main()
         {
             time_t dt = now() - test_cases.front().first;
             timespec req = {dt / SECOND_TO_NANO, dt % SECOND_TO_NANO}, rem;
-            nanosleep(&req, &rem); // 等待到下一条消息的发送时间
+            nanosleep(&req, &rem); // 等待到下一条消息的发送时间   
         }
     }
 
